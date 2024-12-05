@@ -267,7 +267,7 @@ function App() {
         </div>
       </div>
 
-      {/* Platform Selection Bar - Move it higher */}
+      {/* Platform Selection Bar */}
       <div className="mt-6 sm:mt-8 bg-white rounded-xl p-3 sm:p-4">
         <h3 className="text-base sm:text-lg font-semibold mb-3">Select Platform</h3>
         <div className="flex flex-wrap gap-2">
@@ -277,7 +277,9 @@ function App() {
               onClick={() => handlePlatformChange(platform.id)}
               className={`
                 flex items-center gap-1 px-2 sm:px-3 py-1.5 sm:py-2 rounded-lg
-                text-sm whitespace-nowrap transition-all duration-200
+                text-sm
+                whitespace-nowrap
+                transition-all duration-200
                 ${platform.id === selectedPlatform 
                   ? `${platform.activeColor} text-white shadow-lg scale-105` 
                   : 'bg-gray-100 hover:bg-gray-200'
@@ -291,123 +293,134 @@ function App() {
         </div>
       </div>
 
-      {/* Analytics and Audience Container */}
-      <div className="mt-6 grid grid-cols-1 xl:grid-cols-2 gap-6">
-        {/* Analytics Section */}
-        <div className="bg-white rounded-xl p-4">
-          <div className="flex items-center gap-3 mb-4">
-            <h2 className="text-2xl font-bold">Analytics</h2>
-            <span className="text-2xl">📈</span>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {[
-              { title: "Followers Growth", color: "#8884d8", data: chartData, ref: chartRef1, dims: dims1 },
-              { title: "Following Growth", color: "#36B9CC", data: chartData, ref: chartRef2, dims: dims2 },
-              { title: "Engagement Rate", color: "#F6C23E", data: chartData, ref: chartRef3, dims: dims3 },
-              { title: "Average Likes", color: "#E74A3B", data: chartData, ref: chartRef4, dims: dims4 }
-            ].map((chart, index) => (
-              <div 
-                key={index}
-                ref={chart.ref}
-                className="bg-gray-50 rounded-xl p-3 hover:shadow-md transition-all duration-300"
-              >
-                <h3 className="text-base font-semibold text-gray-800 mb-3">{chart.title}</h3>
-                <div className="w-full">
-                  <ResponsiveContainer width="100%" height={180}>
-                    <LineChart 
-                      data={chart.data}
-                      margin={{ top: 5, right: 10, left: 0, bottom: 5 }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-                      <XAxis dataKey="name" stroke="#888" fontSize={12} />
-                      <YAxis stroke="#888" fontSize={12} />
-                      <Tooltip />
-                      <Line 
-                        type="monotone" 
-                        dataKey="value" 
-                        stroke={chart.color}
-                        strokeWidth={2}
-                        dot={{ stroke: chart.color, strokeWidth: 2, r: 4 }}
-                        activeDot={{ r: 6, stroke: '#fff', strokeWidth: 2 }}
-                      />
-                    </LineChart>
-                  </ResponsiveContainer>
-                </div>
+      {/* Analytics Section */}
+      <div className="mt-6 sm:mt-8">
+        <div className="flex items-center gap-3 mb-4">
+          <h2 className="text-2xl font-bold">Analytics</h2>
+          <span className="text-2xl">📈</span>
+        </div>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {[
+            { title: "Followers Growth", color: "#8884d8", data: chartData, ref: chartRef1, dims: dims1 },
+            { title: "Following Growth", color: "#36B9CC", data: chartData, ref: chartRef2, dims: dims2 },
+            { title: "Engagement Rate", color: "#F6C23E", data: chartData, ref: chartRef3, dims: dims3 },
+            { title: "Average Likes", color: "#E74A3B", data: chartData, ref: chartRef4, dims: dims4 }
+          ].map((chart, index) => (
+            <div 
+              key={index}
+              ref={chart.ref}
+              className="bg-white rounded-xl p-4 shadow-sm hover:shadow-md transition-all duration-300"
+            >
+              <h3 className="text-base sm:text-lg font-semibold text-gray-800 mb-4">{chart.title}</h3>
+              <div className="w-full">
+                <ResponsiveContainer width="100%" height={chart.dims.height}>
+                  <LineChart 
+                    data={chart.data}
+                    margin={{ top: 5, right: 20, left: 10, bottom: 5 }}
+                  >
+                    <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                    <XAxis 
+                      dataKey="name" 
+                      stroke="#888"
+                      fontSize={12}
+                    />
+                    <YAxis 
+                      stroke="#888"
+                      fontSize={12}
+                    />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: '#fff',
+                        border: 'none',
+                        borderRadius: '8px',
+                        boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+                      }}
+                    />
+                    <Line 
+                      type="monotone" 
+                      dataKey="value" 
+                      stroke={chart.color}
+                      strokeWidth={2}
+                      dot={{ stroke: chart.color, strokeWidth: 2, r: 4 }}
+                      activeDot={{ r: 6, stroke: '#fff', strokeWidth: 2 }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Audience Section */}
+      <div className="mt-6 sm:mt-8 bg-white rounded-xl p-4 sm:p-6">
+        <div className="flex items-center gap-3 mb-6">
+          <h2 className="text-2xl font-bold">Audience</h2>
+          <span className="text-2xl">👥</span>
         </div>
 
-        {/* Audience Section */}
-        <div className="bg-white rounded-xl p-4">
-          <div className="flex items-center gap-3 mb-4">
-            <h2 className="text-2xl font-bold">Audience</h2>
-            <span className="text-2xl">👥</span>
+        <div className="space-y-8">
+          {/* Gender Demographics */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-gray-800">Gender</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {audienceData.gender.map((item, index) => (
+                <div key={index} className="bg-gray-50 rounded-lg p-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-600">{item.label}</span>
+                    <span className="font-semibold">{item.percentage}%</span>
+                  </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-purple-500 h-2 rounded-full"
+                      style={{ width: `${item.percentage}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
 
-          <div className="space-y-6">
-            {/* Gender Demographics */}
-            <div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">Gender</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {audienceData.gender.map((item, index) => (
-                  <div key={index} className="bg-gray-50 rounded-lg p-3">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-gray-600">{item.label}</span>
-                      <span className="font-semibold">{item.percentage}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-purple-500 h-2 rounded-full"
-                        style={{ width: `${item.percentage}%` }}
-                      />
-                    </div>
+          {/* Age Demographics */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-gray-800">Age</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+              {audienceData.age.map((item, index) => (
+                <div key={index} className="bg-gray-50 rounded-lg p-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-600">{item.label}</span>
+                    <span className="font-semibold">{item.percentage}%</span>
                   </div>
-                ))}
-              </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-blue-500 h-2 rounded-full"
+                      style={{ width: `${item.percentage}%` }}
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
+          </div>
 
-            {/* Age Demographics */}
-            <div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">Age</h3>
-              <div className="grid grid-cols-2 lg:grid-cols-5 gap-3">
-                {audienceData.age.map((item, index) => (
-                  <div key={index} className="bg-gray-50 rounded-lg p-3">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-gray-600">{item.label}</span>
-                      <span className="font-semibold">{item.percentage}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-blue-500 h-2 rounded-full"
-                        style={{ width: `${item.percentage}%` }}
-                      />
-                    </div>
+          {/* Interests */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-gray-800">Interests</h3>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {audienceData.interests.map((item, index) => (
+                <div key={index} className="bg-gray-50 rounded-lg p-4">
+                  <div className="flex justify-between items-center mb-2">
+                    <span className="text-gray-600">{item.label}</span>
+                    <span className="font-semibold">{item.percentage}%</span>
                   </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Interests */}
-            <div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">Interests</h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                {audienceData.interests.map((item, index) => (
-                  <div key={index} className="bg-gray-50 rounded-lg p-3">
-                    <div className="flex justify-between items-center mb-2">
-                      <span className="text-gray-600">{item.label}</span>
-                      <span className="font-semibold">{item.percentage}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-2">
-                      <div
-                        className="bg-green-500 h-2 rounded-full"
-                        style={{ width: `${item.percentage}%` }}
-                      />
-                    </div>
+                  <div className="w-full bg-gray-200 rounded-full h-2">
+                    <div
+                      className="bg-green-500 h-2 rounded-full"
+                      style={{ width: `${item.percentage}%` }}
+                    />
                   </div>
-                ))}
-              </div>
+                </div>
+              ))}
             </div>
           </div>
         </div>
