@@ -56,6 +56,14 @@ const platformData = {
         { label: 'Technology', percentage: 20 },
         { label: 'Entertainment', percentage: 20 },
         { label: 'Sports', percentage: 10 }
+      ],
+      location: [
+        { label: 'United States', percentage: 35 },
+        { label: 'United Kingdom', percentage: 20 },
+        { label: 'Canada', percentage: 15 },
+        { label: 'Germany', percentage: 10 },
+        { label: 'Australia', percentage: 10 },
+        { label: 'Others', percentage: 10 }
       ]
     }
   },
@@ -85,6 +93,14 @@ const platformData = {
         { label: 'Technology', percentage: 15 },
         { label: 'Entertainment', percentage: 10 },
         { label: 'Sports', percentage: 5 }
+      ],
+      location: [
+        { label: 'United States', percentage: 40 },
+        { label: 'United Kingdom', percentage: 15 },
+        { label: 'Canada', percentage: 20 },
+        { label: 'Germany', percentage: 10 },
+        { label: 'Australia', percentage: 8 },
+        { label: 'Others', percentage: 7 }
       ]
     }
   },
@@ -421,6 +437,67 @@ function App() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Location Demographics */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-gray-800">Location</h3>
+            <div className="bg-gray-50 rounded-lg p-4">
+              {/* Stacked bar */}
+              <div className="w-full h-8 bg-gray-200 rounded-full overflow-hidden flex">
+                {audienceData.location.map((item, index) => {
+                  // Define complementary colors
+                  const colors = [
+                    '#FF6B6B', // Coral Red
+                    '#4ECDC4', // Turquoise
+                    '#45B7D1', // Sky Blue
+                    '#96CEB4', // Sage Green
+                    '#FFEEAD', // Soft Yellow
+                    '#D4A5A5'  // Dusty Rose
+                  ];
+
+                  return (
+                    <div
+                      key={index}
+                      className="h-full relative group"
+                      style={{
+                        width: `${item.percentage}%`,
+                        backgroundColor: colors[index % colors.length]
+                      }}
+                    >
+                      {/* Tooltip */}
+                      <div className="opacity-0 group-hover:opacity-100 absolute bottom-full mb-2 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs py-1 px-2 rounded whitespace-nowrap transition-opacity">
+                        {item.label}: {item.percentage}%
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+              
+              {/* Labels below the bar */}
+              <div className="mt-4 grid grid-cols-2 sm:grid-cols-3 gap-2">
+                {audienceData.location.map((item, index) => {
+                  const colors = [
+                    '#FF6B6B',
+                    '#4ECDC4',
+                    '#45B7D1',
+                    '#96CEB4',
+                    '#FFEEAD',
+                    '#D4A5A5'
+                  ];
+                  
+                  return (
+                    <div key={index} className="flex items-center gap-2">
+                      <div 
+                        className="w-3 h-3 rounded-full" 
+                        style={{ backgroundColor: colors[index % colors.length] }}
+                      />
+                      <span className="text-sm text-gray-600">{item.label} ({item.percentage}%)</span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
